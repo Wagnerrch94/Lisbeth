@@ -547,14 +547,35 @@ function toISO(str){
   return null;
 }
 function calcEdad(fNac){
-  if(!fNac)return'';
-  const b=new Date(fNac);if(isNaN(b))return'';
-  const diff=TODAY-b;
-  const totalDias=Math.floor(diff/86400000);
-  const años=Math.floor(totalDias/365.25);
-  const meses=Math.floor((totalDias%365.25)/30.44);
-  const dias=Math.floor(totalDias%30.44);
-  return años+' Años '+meses+' Meses '+dias+' Dias';
+  if(!fNac) return '';
+  let b;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(String(fNac))){
+    const p = String(fNac).split('-');
+    b = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+  } else {
+    const tmp = new Date(fNac);
+    if(isNaN(tmp)) return '';
+    // usar componentes UTC para evitar el corrimiento de -5h de Perú
+    b = new Date(tmp.getUTCFullYear(), tmp.getUTCMonth(), tmp.getUTCDate());
+  }
+  if(isNaN(b)) return '';
+
+  let years = TODAY.getFullYear() - b.getFullYear();
+  let months = TODAY.getMonth() - b.getMonth();
+  let days = TODAY.getDate() - b.getDate();
+
+  if(days < 0){
+    months--;
+    // último día del mes anterior a TODAY
+    const prevMonth = new Date(TODAY.getFullYear(), TODAY.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+  if(months < 0){
+    years--;
+    months += 12;
+  }
+
+  return years+' Años '+months+' Meses '+days+' Dias';
 }
 function citaClass(p){const d=dd(p['PROXIMA CITA']);if(d===null)return'sin';if(d<0)return'vencida';if(d===0)return'hoy';if(d<=30)return'proxima';return'futura';}
 
