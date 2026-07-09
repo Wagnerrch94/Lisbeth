@@ -513,21 +513,10 @@ function dd(dateStr){
     var parts=String(dateStr).split("-");
     d=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
   } else {
-   function dd(dateStr){
-  if(!dateStr)return null;
-  var d;
-  if(/^\d{4}-\d{2}-\d{2}$/.test(String(dateStr))){
-    var parts=String(dateStr).split("-");
-    d=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
-  } else {
     var tmp=new Date(dateStr);
     if(isNaN(tmp))return null;
     // usar componentes UTC (igual que fmtDate) para evitar el corrimiento de -5h de Perú
     d=new Date(tmp.getUTCFullYear(), tmp.getUTCMonth(), tmp.getUTCDate());
-  }
-  if(isNaN(d))return null;
-  return Math.round((d-TODAY)/86400000);
-}
   }
   if(isNaN(d))return null;
   return Math.round((d-TODAY)/86400000);
