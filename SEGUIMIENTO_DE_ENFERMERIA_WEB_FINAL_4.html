@@ -555,7 +555,6 @@ function calcEdad(fNac){
   } else {
     const tmp = new Date(fNac);
     if(isNaN(tmp)) return '';
-    // usar componentes UTC para evitar el corrimiento de -5h de Perú
     b = new Date(tmp.getUTCFullYear(), tmp.getUTCMonth(), tmp.getUTCDate());
   }
   if(isNaN(b)) return '';
@@ -566,7 +565,6 @@ function calcEdad(fNac){
 
   if(days < 0){
     months--;
-    // último día del mes anterior a TODAY
     const prevMonth = new Date(TODAY.getFullYear(), TODAY.getMonth(), 0);
     days += prevMonth.getDate();
   }
